@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import TextAreaField, IntegerField, DateField, StringField, SubmitField
+from wtforms import TextAreaField, IntegerField, DateField, StringField, SubmitField, BooleanField
 from data import db_session
 
 
@@ -10,5 +10,6 @@ class NewJobForm(FlaskForm):
     collaborators = StringField("IDs of collaborators (<id1>, <id2>, ...)")
     start_date = DateField("Date of work start")
     end_date = DateField("Date of work finish")
+    is_finished = BooleanField("Is job finished?")
     submit = SubmitField("Submit")
     

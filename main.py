@@ -169,6 +169,7 @@ def new_job():
         job.collaborators = form.collaborators.data
         job.start_date = form.start_date.data
         job.end_date = form.end_date.data
+        job.is_finished = form.is_finished.data
         db_sess.add(job)
 
         db_sess.commit()
