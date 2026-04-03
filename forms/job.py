@@ -1,0 +1,14 @@
+from flask_wtf import FlaskForm
+from wtforms import TextAreaField, IntegerField, DateField, StringField, SubmitField
+from data import db_session
+
+
+class NewJobForm(FlaskForm):
+    job = TextAreaField("Job description")
+    work_size = IntegerField("The duration of work (in hours)")
+    team_leader = IntegerField("ID of the team leader")
+    collaborators = StringField("IDs of collaborators (<id1>, <id2>, ...)")
+    start_date = DateField("Date of work start")
+    end_date = DateField("Date of work finish")
+    submit = SubmitField("Submit")
+    
