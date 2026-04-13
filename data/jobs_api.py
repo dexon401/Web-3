@@ -38,15 +38,24 @@ def create_job():
     ):
         return make_response(jsonify({"error": "Bad request"}), 400)
     
+    try:
+        team_leader = int(request.json["team_leader"])
+        work_size = int(request.json["work_size"])
+        is_finished = bool(request.json["is_finished"])
+        start_date = datetime.datetime.fromisoformat(request.json["start_date"])
+        end_date = datetime.datetime.fromisoformat(request.json["end_date"])
+    except (ValueError, TypeError) as e:
+        return make_response(jsonify({"error": f"Invalid data type: {str(e)}"}), 400)
+    
     db_sess = db_session.create_session()
     job = Jobs()
-    job.team_leader = request.json["team_leader"]
+    job.team_leader = team_leader
     job.job = request.json["job"]
-    job.work_size = request.json["work_size"]
+    job.work_size = work_size
     job.collaborators = request.json["collaborators"]
-    job.start_date = datetime.datetime.fromisoformat(request.json["start_date"])
-    job.end_date = datetime.datetime.fromisoformat(request.json["end_date"])
-    job.is_finished = request.json["is_finished"]
+    job.start_date = start_date
+    job.end_date = end_date
+    job.is_finished = is_finished
     db_sess.add(job)
     db_sess.commit()
     return jsonify({"id": job.id})
