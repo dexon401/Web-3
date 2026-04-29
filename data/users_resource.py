@@ -1,5 +1,6 @@
-from flask_restful import Resource, abort, reqparse
 from flask import jsonify
+from flask_restful import Resource, abort, reqparse
+
 from .db_session import create_session
 from .users import User
 
@@ -27,9 +28,7 @@ class UsersResource(Resource):
         abort_if_user_not_found(user_id)
         session = create_session()
         user = session.get(User, user_id)
-        return jsonify(
-            {"user": user.to_dict(rules=["-departments", "-jobs", "-hashed_password"])}
-        )
+        return jsonify({"user": user.to_dict(rules=["-departments", "-jobs", "-hashed_password"])})
 
     def delete(self, user_id):
         abort_if_user_not_found(user_id)
@@ -44,14 +43,7 @@ class UsersListResourse(Resource):
     def get(self):
         session = create_session()
         users = session.query(User).all()
-        return jsonify(
-            {
-                "users": [
-                    item.to_dict(rules=["-departments", "-jobs", "-hashed_password"])
-                    for item in users
-                ]
-            }
-        )
+        return jsonify({"users": [item.to_dict(rules=["-departments", "-jobs", "-hashed_password"]) for item in users]})
 
     def post(self):
         args = parser.parse_args()

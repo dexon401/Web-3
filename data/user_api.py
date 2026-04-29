@@ -1,7 +1,7 @@
-import flask
-
 from datetime import datetime
-from flask import request, make_response, jsonify
+
+import flask
+from flask import jsonify, make_response, request
 
 from . import db_session
 from .users import User
@@ -34,20 +34,7 @@ def get_user(user_id):
 def create_user():
     if not request.json:
         return make_response(jsonify({"error": "Empty request"}), 400)
-    elif not all(
-        key in request.json
-        for key in [
-            "surname",
-            "name",
-            "age",
-            "position",
-            "speciality",
-            "address",
-            "email",
-            "password",
-            "modified_date"
-        ]
-    ):
+    elif not all(key in request.json for key in ["surname", "name", "age", "position", "speciality", "address", "email", "password", "modified_date"]):
         return make_response(jsonify({"error": "Bad request"}), 400)
 
     try:
@@ -104,10 +91,10 @@ def edit_user(user_id):
     user = db_sess.get(User, user_id)
     if not user:
         return make_response(jsonify({"error": "Not found"}), 404)
-    
+
     if not request.json:
         return make_response(jsonify({"error": "Empty request"}), 400)
-    
+
     for k in request.json:
         if hasattr(user, k) and k != "id":
             try:
@@ -115,5 +102,5 @@ def edit_user(user_id):
             except (ValueError, TypeError) as e:
                 return make_response(jsonify({"error": f"invalid data type: {e}"}), 400)
     db_sess.commit()
-    
+
     return jsonify({"success": "OK"})

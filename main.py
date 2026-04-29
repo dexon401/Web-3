@@ -6,7 +6,7 @@ from flask import Flask, jsonify, make_response, redirect, render_template
 from flask_login import LoginManager, login_required, login_user, logout_user
 from flask_restful import Api
 
-from data import db_session, jobs_api, user_api, users_resource
+from data import db_session, jobs_api, user_api, users_resource, jobs_resource
 from data.jobs import Jobs
 from data.users import User
 from forms.job import NewJobForm
@@ -21,6 +21,8 @@ app.config["SECRET_KEY"] = "yandexlyceum_secret_key"
 api = Api(app)
 api.add_resource(users_resource.UsersListResourse, "/api/v2/users")
 api.add_resource(users_resource.UsersResource, "/api/v2/users/<int:user_id>")
+api.add_resource(jobs_resource.JobsListResource, "/api/v2/jobs")
+api.add_resource(jobs_resource.JobsResource, "api/v2/jobs/<int:job_id>")
 
 
 login_manager = LoginManager()

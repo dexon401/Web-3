@@ -1,6 +1,7 @@
-import flask
 import datetime
-from flask import request, make_response, jsonify
+
+import flask
+from flask import jsonify, make_response, request
 
 from . import db_session
 from .jobs import Jobs
@@ -95,10 +96,10 @@ def edit_job(job_id):
     job = db_sess.get(Jobs, job_id)
     if not job:
         return make_response(jsonify({"error": "Not found"}), 404)
-    
+
     if not request.json:
         return make_response(jsonify({"error": "Empty request"}), 400)
-    
+
     for k in request.json:
         if hasattr(job, k) and k != "id":
             try:
@@ -106,5 +107,5 @@ def edit_job(job_id):
             except (ValueError, TypeError) as e:
                 return make_response(jsonify({"error": f"invalid data type: {e}"}), 400)
     db_sess.commit()
-    
+
     return jsonify({"success": "OK"})
