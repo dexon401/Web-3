@@ -1,6 +1,7 @@
-import requests
 import datetime
-from pprint import pprint, pformat
+from pprint import pformat
+
+import requests
 
 host = "127.0.0.1"
 port = "5000"
@@ -133,15 +134,15 @@ if TEST_DELETE:
     print(
         f"\tHttp status: {response}, reason: {response.reason}, json: \n\t{pformat(response.json())}"
     )
-    
+
     # Тест неправильного запроса удаления работы (не существующий id)
     print("incorrect DELETE job request (not a valid id):")
     response = requests.delete(f"http://{host}:{port}/api/jobs/999")
     print(
         f"\tHttp status: {response}, reason: {response.reason}, json: \n\t{pformat(response.json())}"
     )
-    
-    #Тест неправильного запроса удаления работы (неправильный тип данных)
+
+    # Тест неправильного запроса удаления работы (неправильный тип данных)
     print("incorrect DELETE job request (not a valid id type):")
     response = requests.delete(f"http://{host}:{port}/api/jobs/test")
     print(
@@ -150,7 +151,7 @@ if TEST_DELETE:
 
 if TEST_PUT:
     # PUT запросы
-    
+
     # Тест правильного запроса изменения работы
     print("correct PUT job request:")
     json = {
@@ -163,28 +164,39 @@ if TEST_PUT:
         "is_finished": False,
     }
     response = requests.post(f"http://{host}:{port}/api/jobs", json=json)
-    job_id = response.json()['id']
+    job_id = response.json()["id"]
     print(f"\tcreated job with id {job_id} info: {json}")
-    print(f"\tchanging job's team leader to 2")
-    response = requests.put(f"http://{host}:{port}/api/jobs/{job_id}", json={"team_leader": 2})
+    print("\tchanging job's team leader to 2")
+    response = requests.put(
+        f"http://{host}:{port}/api/jobs/{job_id}", json={"team_leader": 2}
+    )
     print(
         f"\tHttp status: {response}, reason: {response.reason}, json: \n\t{pformat(response.json())}"
     )
-    print("\tchanged job with id", job_id, "info:", requests.get(f"http://{host}:{port}/api/jobs/{job_id}").json())
-    
+    print(
+        "\tchanged job with id",
+        job_id,
+        "info:",
+        requests.get(f"http://{host}:{port}/api/jobs/{job_id}").json(),
+    )
+
     if DELETE_TEST_JOBS:
         requests.delete(f"http://{host}:{port}/api/jobs/{job_id}")
-    
-    #Тест неправильного запроса изменения работы (не существующий id)
+
+    # Тест неправильного запроса изменения работы (не существующий id)
     print("incorrect job PUT request (not a valid id):")
-    response = requests.put(f"http://{host}:{port}/api/jobs/999", json={"team_leader": 2})
+    response = requests.put(
+        f"http://{host}:{port}/api/jobs/999", json={"team_leader": 2}
+    )
     print(
         f"\tHttp status: {response}, reason: {response.reason}, json: \n\t{pformat(response.json())}"
     )
-    
-    #Тест неправильного запроса изменения работы (неправильный тип id)
+
+    # Тест неправильного запроса изменения работы (неправильный тип id)
     print("incorrect job PUT request (not a valid id type):")
-    response = requests.put(f"http://{host}:{port}/api/jobs/test", json={"team_leader": 2})
+    response = requests.put(
+        f"http://{host}:{port}/api/jobs/test", json={"team_leader": 2}
+    )
     print(
         f"\tHttp status: {response}, reason: {response.reason}, json: \n\t{pformat(response.json())}"
     )
