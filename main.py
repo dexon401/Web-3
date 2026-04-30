@@ -9,6 +9,8 @@ from flask_restful import Api
 from data import db_session, jobs_api, user_api, users_resource, jobs_resource
 from data.jobs import Jobs
 from data.users import User
+from data.departments import Department as Department
+
 from forms.job import NewJobForm
 from forms.user import LoginForm, RegisterForm
 
@@ -22,7 +24,7 @@ api = Api(app)
 api.add_resource(users_resource.UsersListResourse, "/api/v2/users")
 api.add_resource(users_resource.UsersResource, "/api/v2/users/<int:user_id>")
 api.add_resource(jobs_resource.JobsListResource, "/api/v2/jobs")
-api.add_resource(jobs_resource.JobsResource, "api/v2/jobs/<int:job_id>")
+api.add_resource(jobs_resource.JobsResource, "/api/v2/jobs/<int:job_id>")
 
 
 login_manager = LoginManager()
